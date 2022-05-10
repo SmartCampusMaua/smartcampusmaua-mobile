@@ -1,6 +1,6 @@
 # smartcampusmaua-app
 
-The `smartcampusmaua-app` is developed using the React Native `0.68+` framework for both `Android / IOS` native App platform, using TypeScript.
+The `smartcampusmaua-app` is developed using the React Native `0.68+` framework for both `Android / IOS` native App platform using TypeScript.
 
 ## Prerequirements
 
