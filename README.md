@@ -4,7 +4,7 @@ The `smartcampusmaua-app` is developed using the React Native `0.68+` framework 
 
 ## Prerequirements
 
-Please make sure the necessary Tools to develop Apps with React Native framework at `https://github.com/smartcampusmaua/smartcampusmaua-tools/tree/main/ReactNative`
+Please make sure the necessary Tools to develop Apps with React Native framework at https://github.com/smartcampusmaua/smartcampusmaua-tools/tree/main/ReactNative
 
 ## Quick Start
 
