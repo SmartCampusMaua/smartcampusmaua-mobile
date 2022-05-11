@@ -165,7 +165,7 @@ const App = () => {
               <Button title="Get Location" onPress={callLocation}/>
             </View>
             <View style={styles.button}>
-              <Button title="Stop Trackin" onPress={clearLocation}/>
+              <Button title="Stop Tracking" onPress={clearLocation}/>
             </View>
         </View>
       </ScrollView>
