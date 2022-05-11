@@ -112,7 +112,7 @@ const App = () => {
         setCurrentLongitude(currentLongitude);
       },
       (error) => Alert.alert(error.message), //Error callback function
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      { enableHighAccuracy: true, timeout: 2000, maximumAge: 1000 }
     );
     const watchID = Geolocation.watchPosition((position) => {
       const currentLatitude = JSON.stringify(position.coords.latitude);
