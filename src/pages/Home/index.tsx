@@ -5,11 +5,17 @@
  * Generated with the TypeScript template
  * https://github.com/react-native-community/react-native-template-typescript
  *
+ * GPS Tutorial
+ * https://www.youtube.com/watch?v=647fyLiVKLs
+ * 
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Alert,
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -17,6 +23,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
 } from 'react-native';
 
 import {
@@ -26,6 +33,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import Geolocation from '@react-native-community/geolocation'; //Import of Geolocation
 
 const Section: React.FC<{
   title: string;
@@ -62,6 +71,63 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  //GPS Variables 
+  const [currentLatitude, setCurrentLatitude] = useState('');
+  const [currentLongitude, setCurrentLongitude] = useState('');
+  const [watchID, setWatchID] = useState(0); //GPS tracking ID, needed for tracking it's callbacks, states and to end it
+
+  //GPS Permissions for both OS's
+  const callLocation = () => {
+    if(Platform.OS === 'ios'){
+      getLocation();
+    }else{
+      const requestLocationPermission = async () => {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACESS_FINE_LOCATION,
+          {
+            title: "Permit Location Acess",
+            message: "The App needs to acess your location.",
+            buttonNeutral: "Ask me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        );
+        if(granted === PermissionsAndroid.RESULTS.GRANTED){
+          getLocation();
+        }else{
+          Alert.alert('Location Permition Denied'); 
+        }
+      };
+      requestLocationPermission()
+    }
+  }
+
+  //Function to obtain location
+  const getLocation = () => {
+    Geolocation.getCurrentPosition(
+      (position) => { //Sucess callback function
+        const currentLatitude = JSON.stringify(position.coords.latitude);
+        const currentLongitude = JSON.stringify(position.coords.longitude);
+        setCurrentLatitude(currentLatitude);
+        setCurrentLongitude(currentLongitude);
+      },
+      (error) => Alert.alert(error.message), //Error callback function
+      { enableHighAccuracy: true, timeout: 2000, maximumAge: 1000 }
+    );
+    const watchID = Geolocation.watchPosition((position) => {
+      const currentLatitude = JSON.stringify(position.coords.latitude);
+      const currentLongitude = JSON.stringify(position.coords.longitude);
+      setCurrentLatitude(currentLatitude);
+      setCurrentLongitude(currentLongitude);
+    });
+    setWatchID(watchID);  
+  }
+  
+  //Function do end GPS tracking 
+  const clearLocation = () =>{
+    Geolocation.clearWatch(watchID);
+  }
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -88,6 +154,20 @@ const App = () => {
           </Section>
           <LearnMoreLinks />
         </View>
+        <View style={styles.container}>
+          <Text style={styles.text}>
+            Latitude: {currentLatitude}
+          </Text>
+          <Text style={styles.text}>
+            Longitude: {currentLongitude}
+          </Text>
+            <View style={styles.button}>
+              <Button title="Get Location" onPress={callLocation}/>
+            </View>
+            <View style={styles.button}>
+              <Button title="Stop Trackin" onPress={clearLocation}/>
+            </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -109,6 +189,31 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
+    marginBottom: 50,
+    marginRight: 20,
+    marginLeft: 20,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'black',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
 });
 
