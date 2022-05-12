@@ -11,7 +11,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   PermissionsAndroid,
@@ -38,7 +38,8 @@ import Geolocation from '@react-native-community/geolocation'; //Import of Geolo
 
 import axios from 'axios'; //Import of http library
 
-const URL = 'http://localhost:1880/api/gpslocation';
+//const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
+const baseURL = 'http://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
 const Section: React.FC<{
   title: string;
@@ -135,14 +136,14 @@ const App = () => {
   //Axios HTTP 
   const [post, setPost] = React.useState(null);
 
-  React.useEffect(() => {
-    axios.get(`${URL}/1`).then((response) => {
+  useEffect(() => {
+    axios.get(`${baseURL}/1`).then((response) => {
       setPost(response.data);
     });
   }, []);
 
   function createPost() {
-    axios.post(URL, {
+    axios.post(baseURL, {
       title: "Hello World!",
       body: "This is a new post!"
     }).then((response) => {
@@ -161,26 +162,6 @@ const App = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
         <View style={styles.container}>
           <Text style={styles.text}>
             Latitude: {currentLatitude}
