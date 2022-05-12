@@ -38,8 +38,10 @@ import Geolocation from '@react-native-community/geolocation'; //Import of Geolo
 
 import axios from 'axios'; //Import of http library
 
-//const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
-const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
+const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
+// const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
+
+
 
 const Section: React.FC<{
   title: string;
@@ -157,12 +159,9 @@ const App = () => {
     }).catch(error => console.log(error));
   }
 
-  if(!post){
-    console.log('No post!');
-  }
-
-  function sendLocation(){
-    
+  async function sendLocation(){
+    callLocation();
+    createPost(); //will send first a blank Location, then always the previous obtained Location
   }
 
 
