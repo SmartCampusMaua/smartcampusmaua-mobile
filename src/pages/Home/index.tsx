@@ -39,7 +39,7 @@ import Geolocation from '@react-native-community/geolocation'; //Import of Geolo
 import axios from 'axios'; //Import of http library
 
 //const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
-const baseURL = 'http://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
+const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
 const Section: React.FC<{
   title: string;
@@ -79,6 +79,7 @@ const App = () => {
   //GPS Variables 
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [currentLongitude, setCurrentLongitude] = useState('');
+  const [currentAltitude, setCurrentAltitude] = useState('');
   const [watchID, setWatchID] = useState(0); //GPS tracking ID, needed for tracking it's callbacks, states and to end it
 
   //GPS Permissions for both OS's
@@ -113,8 +114,10 @@ const App = () => {
       (position) => { //Sucess callback function
         const currentLatitude = JSON.stringify(position.coords.latitude);
         const currentLongitude = JSON.stringify(position.coords.longitude);
+        const currentAltitude = JSON.stringify(position.coords.altitude);
         setCurrentLatitude(currentLatitude);
         setCurrentLongitude(currentLongitude);
+        setCurrentAltitude(currentAltitude);
       },
       (error) => Alert.alert(error.message), //Error callback function
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
@@ -122,8 +125,10 @@ const App = () => {
     const watchID = Geolocation.watchPosition((position) => {
       const currentLatitude = JSON.stringify(position.coords.latitude);
       const currentLongitude = JSON.stringify(position.coords.longitude);
+      const currentAltitude = JSON.stringify(position.coords.altitude);
       setCurrentLatitude(currentLatitude);
       setCurrentLongitude(currentLongitude);
+      setCurrentAltitude(currentAltitude);
     });
     setWatchID(watchID);
   }
@@ -144,8 +149,9 @@ const App = () => {
 
   function createPost() {
     axios.post(baseURL, {
-      title: "Hello World!",
-      body: "This is a new post!"
+      lat: -23.4,
+      lon: -46.5,
+      alt: 700,
     }).then((response) => {
       setPost(response.data);
     }).catch(error => console.log(error));
@@ -168,6 +174,9 @@ const App = () => {
           </Text>
           <Text style={styles.text}>
             Longitude: {currentLongitude}
+          </Text>
+          <Text style={styles.text}>
+            Altitude: {currentAltitude}
           </Text>
           <View style={styles.button}>
             <Button title="Get Location" onPress={callLocation} />
