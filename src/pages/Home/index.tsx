@@ -36,9 +36,13 @@ import {
 
 import Geolocation from '@react-native-community/geolocation'; //Import of Geolocation
 
+import axios from 'axios'; //Import of http library
+
+const URL = 'http://localhost:1880/api/gpslocation';
+
 const Section: React.FC<{
   title: string;
-}> = ({children, title}) => {
+}> = ({ children, title }) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -78,9 +82,9 @@ const App = () => {
 
   //GPS Permissions for both OS's
   const callLocation = () => {
-    if(Platform.OS === 'ios'){
+    if (Platform.OS === 'ios') {
       getLocation();
-    }else{
+    } else {
       const requestLocationPermission = async () => {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -92,10 +96,10 @@ const App = () => {
             buttonPositive: "OK"
           }
         );
-        if(granted === PermissionsAndroid.RESULTS.GRANTED){
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           getLocation();
-        }else{
-          Alert.alert('Location Permition Denied'); 
+        } else {
+          Alert.alert('Location Permition Denied');
         }
       };
       requestLocationPermission()
@@ -120,13 +124,36 @@ const App = () => {
       setCurrentLatitude(currentLatitude);
       setCurrentLongitude(currentLongitude);
     });
-    setWatchID(watchID);  
+    setWatchID(watchID);
   }
-  
+
   //Function do end GPS tracking 
-  const clearLocation = () =>{
+  const clearLocation = () => {
     Geolocation.clearWatch(watchID);
   }
+
+  //Axios HTTP 
+  const [post, setPost] = React.useState(null);
+
+  React.useEffect(() => {
+    axios.get(`${URL}/1`).then((response) => {
+      setPost(response.data);
+    });
+  }, []);
+
+  function createPost() {
+    axios.post(URL, {
+      title: "Hello World!",
+      body: "This is a new post!"
+    }).then((response) => {
+      setPost(response.data);
+    }).catch(error => console.log(error));
+  }
+
+  if(!post){
+    console.log('No post!');
+  }
+
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -161,12 +188,15 @@ const App = () => {
           <Text style={styles.text}>
             Longitude: {currentLongitude}
           </Text>
-            <View style={styles.button}>
-              <Button title="Get Location" onPress={callLocation}/>
-            </View>
-            <View style={styles.button}>
-              <Button title="Stop Tracking" onPress={clearLocation}/>
-            </View>
+          <View style={styles.button}>
+            <Button title="Get Location" onPress={callLocation} />
+          </View>
+          <View style={styles.button}>
+            <Button title="Stop Tracking" onPress={clearLocation} />
+          </View>
+          <View style={styles.button}>
+              <Button title="POST" onPress={createPost}/>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
