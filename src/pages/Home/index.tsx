@@ -149,9 +149,9 @@ const App = () => {
 
   function createPost() {
     axios.post(baseURL, {
-      lat: -23.4,
-      lon: -46.5,
-      alt: 700,
+      lat: currentLatitude,
+      lon: currentLongitude,
+      alt: currentAltitude,
     }).then((response) => {
       setPost(response.data);
     }).catch(error => console.log(error));
@@ -159,6 +159,10 @@ const App = () => {
 
   if(!post){
     console.log('No post!');
+  }
+
+  function sendLocation(){
+    
   }
 
 
@@ -186,6 +190,9 @@ const App = () => {
           </View>
           <View style={styles.button}>
               <Button title="POST" onPress={createPost}/>
+          </View>
+          <View style={styles.button}>
+              <Button title="Send Location" onPress={sendLocation}/>
           </View>
         </View>
       </ScrollView>
