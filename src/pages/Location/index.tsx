@@ -19,8 +19,8 @@ import axios from 'axios'; //Import of http library
 
 
 
-//const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
-const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
+const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
+// const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
 export const LocationScreen = () => {
   //GPS Variables 
@@ -62,6 +62,7 @@ export const LocationScreen = () => {
         const currentLatitude = JSON.stringify(position.coords.latitude);
         const currentLongitude = JSON.stringify(position.coords.longitude);
         const currentAltitude = JSON.stringify(position.coords.altitude);
+        console.log(currentLatitude);
         setCurrentLatitude(currentLatitude);
         setCurrentLongitude(currentLongitude);
         setCurrentAltitude(currentAltitude);
@@ -88,11 +89,11 @@ export const LocationScreen = () => {
   //Axios HTTP 
   const [post, setPost] = React.useState(null);
 
-  useEffect(() => {
-    axios.get(`${baseURL}/1`).then((response) => {
-      setPost(response.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${baseURL}/1`).then((response) => {
+  //     setPost(response.data);
+  //   });
+  // }, []);
 
   function createPost() {
     axios.post(baseURL, {
@@ -108,9 +109,20 @@ export const LocationScreen = () => {
     console.log('No post!');
   }
 
-  function sendLocation(){
-    
+  const sendLocation = () =>{
+    callLocation();
+    console.log(currentLatitude);
+    createPost(); //will send first a blank Location, then always the previous obtained Location
   }
+
+  //Function that obtains location every 10s
+  useEffect(() => {
+    const interval10s = setInterval(() => {
+     sendLocation();
+    }, 10000); //Send location every 10s
+    return () => clearInterval(interval10s);
+  }, [currentLatitude, currentLongitude, currentAltitude]);
+
 
 
   return (
