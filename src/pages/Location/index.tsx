@@ -115,11 +115,11 @@ export const LocationScreen = () => {
     createPost(); //will send first a blank Location, then always the previous obtained Location
   }
 
-  //Function that obtains location every 10s
+  //Function that sends location every 10s
   useEffect(() => {
     const interval10s = setInterval(() => {
      sendLocation();
-    }, 10000); //Send location every 10s
+    }, 10000);
     return () => clearInterval(interval10s);
   }, [currentLatitude, currentLongitude, currentAltitude]);
 
