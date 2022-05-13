@@ -159,15 +159,15 @@ const App = () => {
     }).catch(error => console.log(error));
   }
 
-  function sendLocation() {
+  const sendLocation = () =>{
     callLocation();
     createPost(); //will send first a blank Location, then always the previous obtained Location
   }
 
-  //Function that obtains location every 10s
+  //Function that obtains location every 30s
   useEffect(() => {
     const interval10s = setInterval(() => {
-      callLocation();
+     callLocation();
     }, 10000); //Send location every 10s
     return () => clearInterval(interval10s);
   }, []);
