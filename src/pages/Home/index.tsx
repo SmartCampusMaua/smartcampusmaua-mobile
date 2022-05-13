@@ -159,10 +159,20 @@ const App = () => {
     }).catch(error => console.log(error));
   }
 
-  async function sendLocation(){
+  function sendLocation() {
     callLocation();
     createPost(); //will send first a blank Location, then always the previous obtained Location
   }
+
+  //Function that obtains location every 10s
+  useEffect(() => {
+    const interval10s = setInterval(() => {
+      callLocation();
+    }, 10000); //Send location every 10s
+    return () => clearInterval(interval10s);
+  }, []);
+
+
 
 
   return (
@@ -188,10 +198,10 @@ const App = () => {
             <Button title="Stop Tracking" onPress={clearLocation} />
           </View>
           <View style={styles.button}>
-              <Button title="POST" onPress={createPost}/>
+            <Button title="POST" onPress={createPost} />
           </View>
           <View style={styles.button}>
-              <Button title="Send Location" onPress={sendLocation}/>
+            <Button title="Send Location" onPress={sendLocation} />
           </View>
         </View>
       </ScrollView>
