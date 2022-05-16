@@ -26,8 +26,8 @@ import axios from 'axios'; //Import of http library
 
 
 
-const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
-// const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
+// const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
+const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
 export const LocationScreen = () => {
   //GPS Variables 
@@ -63,8 +63,8 @@ export const LocationScreen = () => {
   }
 
   //Function to obtain location
-  const getLocation = () => {
-    Geolocation.getCurrentPosition(
+  async function getLocation() {
+    await Geolocation.getCurrentPosition(
       (position) => { //Sucess callback function
         const currentLatitude = JSON.stringify(position.coords.latitude);
         const currentLongitude = JSON.stringify(position.coords.longitude);
