@@ -11,7 +11,14 @@ import {
   Text,
   View,
   Button,
+  LogBox
 } from 'react-native';
+
+// Warning:
+// `new NativeEventEmitter()` was called with a non-null argument without the required `removeListeners` method.
+// Seems to be a bug caused by libraries that aren't optmised for the latest version of react-native 
+LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+
 
 import Geolocation from '@react-native-community/geolocation'; //Import of Geolocation
 
@@ -62,7 +69,7 @@ export const LocationScreen = () => {
         const currentLatitude = JSON.stringify(position.coords.latitude);
         const currentLongitude = JSON.stringify(position.coords.longitude);
         const currentAltitude = JSON.stringify(position.coords.altitude);
-        console.log(currentLatitude);
+        // console.log(currentLatitude);
         setCurrentLatitude(currentLatitude);
         setCurrentLongitude(currentLongitude);
         setCurrentAltitude(currentAltitude);
@@ -89,12 +96,6 @@ export const LocationScreen = () => {
   //Axios HTTP 
   const [post, setPost] = React.useState(null);
 
-  // useEffect(() => {
-  //   axios.get(`${baseURL}/1`).then((response) => {
-  //     setPost(response.data);
-  //   });
-  // }, []);
-
   function createPost() {
     axios.post(baseURL, {
       lat: currentLatitude,
@@ -111,7 +112,7 @@ export const LocationScreen = () => {
 
   const sendLocation = () =>{
     callLocation();
-    console.log(currentLatitude);
+    // console.log(currentLatitude);
     createPost(); //will send first a blank Location, then always the previous obtained Location
   }
 
