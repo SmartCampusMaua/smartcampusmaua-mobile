@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { HomeScreen } from '../Home'
 import { LocationScreen } from '../Location'
+import CameraExample from '../Camera';
 
 
 function SettingsScreen() {
@@ -24,6 +25,7 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Location" component={LocationScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Camera" component={CameraExample} />
       </Tab.Navigator>
     </NavigationContainer>
   );

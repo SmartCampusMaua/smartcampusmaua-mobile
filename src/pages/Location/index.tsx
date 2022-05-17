@@ -36,7 +36,7 @@ export const LocationScreen = () => {
   const [currentAltitude, setCurrentAltitude] = useState('');
   const [watchID, setWatchID] = useState(0); //GPS tracking ID, needed for tracking it's callbacks, states and to end it
 
-  //GPS Permissions for both OS's
+  // GPS Permissions for both OS's
   const callLocation = () => {
     if (Platform.OS === 'ios') {
       getLocation();
@@ -63,76 +63,79 @@ export const LocationScreen = () => {
   }
 
   //Function to obtain location
-  async function getLocation() {
-    await Geolocation.getCurrentPosition(
-      (position) => { //Sucess callback function
-        const currentLatitude = JSON.stringify(position.coords.latitude);
-        const currentLongitude = JSON.stringify(position.coords.longitude);
-        const currentAltitude = JSON.stringify(position.coords.altitude);
-        // console.log(currentLatitude);
-        setCurrentLatitude(currentLatitude);
-        setCurrentLongitude(currentLongitude);
-        setCurrentAltitude(currentAltitude);
-      },
-      (error) => Alert.alert(error.message), //Error callback function
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-    const watchID = Geolocation.watchPosition((position) => {
-      const currentLatitude = JSON.stringify(position.coords.latitude);
-      const currentLongitude = JSON.stringify(position.coords.longitude);
-      const currentAltitude = JSON.stringify(position.coords.altitude);
-      setCurrentLatitude(currentLatitude);
-      setCurrentLongitude(currentLongitude);
-      setCurrentAltitude(currentAltitude);
-    });
-    setWatchID(watchID);
-  }
+  // async function getLocation() {
+  //   await Geolocation.getCurrentPosition(
+  //     (position) => { //Sucess callback function
+  //       const currentLatitude = JSON.stringify(position.coords.latitude);
+  //       const currentLongitude = JSON.stringify(position.coords.longitude);
+  //       const currentAltitude = JSON.stringify(position.coords.altitude);
+  //       // console.log(currentLatitude);
+  //       setCurrentLatitude(currentLatitude);
+  //       setCurrentLongitude(currentLongitude);
+  //       setCurrentAltitude(currentAltitude);
+  //     },
+  //     (error) => Alert.alert(error.message), //Error callback function
+  //     { enableHighAccuracy: true, timeout: 30000, maximumAge: 1000 }
+  //   );
+  //   const watchID = Geolocation.watchPosition((position) => {
+  //     const currentLatitude = JSON.stringify(position.coords.latitude);
+  //     const currentLongitude = JSON.stringify(position.coords.longitude);
+  //     const currentAltitude = JSON.stringify(position.coords.altitude);
+  //     setCurrentLatitude(currentLatitude);
+  //     setCurrentLongitude(currentLongitude);
+  //     setCurrentAltitude(currentAltitude);
+  //   });
+  //   setWatchID(watchID);
+  // }
 
   //Function do end GPS tracking 
-  const clearLocation = () => {
-    Geolocation.clearWatch(watchID);
-  }
+  // const clearLocation = () => {
+  //   Geolocation.clearWatch(watchID);
+  // }
 
   //Axios HTTP 
   const [post, setPost] = React.useState(null);
 
-  function createPost() {
-    axios.post(baseURL, {
-      lat: currentLatitude,
-      lon: currentLongitude,
-      alt: currentAltitude,
-    }).then((response) => {
-      setPost(response.data);
-    }).catch(error => console.log(error));
-  }
+  // function createPost() {
+  //   axios.post(baseURL, {
+  //     lat: currentLatitude,
+  //     lon: currentLongitude,
+  //     alt: currentAltitude,
+  //   }).then((response) => {
+  //     setPost(response.data);
+  //   }).catch(error => console.log(error));
+  // }
 
-  if(!post){
-    console.log('No post!');
-  }
+  // if(!post){
+  //   console.log('No post!');
+  // }
 
-  const sendLocation = () =>{
-    callLocation();
-    // console.log(currentLatitude);
-    createPost(); //will send first a blank Location, then always the previous obtained Location
-  }
+  // function sendLocation() {
+  //    callLocation();
+
+  //   // console.log(currentLatitude);
+  //   createPost(); //will send first a blank Location, then always the previous obtained Location
+  // }
 
   //Function that sends location every 10s
-  useEffect(() => {
-    const interval10s = setInterval(() => {
-     sendLocation();
-    }, 10000);
-    return () => clearInterval(interval10s);
-  }, [currentLatitude, currentLongitude, currentAltitude]);
+  // useEffect(() => {
+  //   const interval10s = setInterval(() => {
+  //    sendLocation();
+  //   }, 10000);
+  //   return () => clearInterval(interval10s);
+  // }, [currentLatitude, currentLongitude, currentAltitude]);
 
+  
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} --${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`;
 
 
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-      >
+    <SafeAreaView style={styles.container}>
         <View style={styles.container}>
+          <Text style={styles.text}>
+            Date: {date}
+          </Text>
           <Text style={styles.text}>
             Latitude: {currentLatitude}
           </Text>
@@ -142,7 +145,7 @@ export const LocationScreen = () => {
           <Text style={styles.text}>
             Altitude: {currentAltitude}
           </Text>
-          <View style={styles.button}>
+          {/* <View style={styles.button}>
             <Button title="Get Location" onPress={callLocation} />
           </View>
           <View style={styles.button}>
@@ -153,9 +156,8 @@ export const LocationScreen = () => {
           </View>
           <View style={styles.button}>
               <Button title="Send Location" onPress={sendLocation}/>
-          </View>
+          </View> */}
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
