@@ -39,7 +39,7 @@ export const LocationScreen = () => {
   // GPS Permissions for both OS's
   const callLocation = () => {
     if (Platform.OS === 'ios') {
-      getLocation();
+      // getLocation();
     } else {
       const requestLocationPermission = async () => {
         const granted = await PermissionsAndroid.request(
@@ -53,7 +53,7 @@ export const LocationScreen = () => {
           }
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          getLocation();
+          // getLocation();
         } else {
           Alert.alert('Location Permition Denied');
         }
