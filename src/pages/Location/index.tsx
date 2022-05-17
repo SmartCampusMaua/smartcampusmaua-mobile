@@ -24,12 +24,17 @@ import Geolocation from '@react-native-community/geolocation'; //Import of Geolo
 
 import axios from 'axios'; //Import of http library
 
+import { enableLatestRenderer } from 'react-native-maps'; //Import for the latest Google Maps map
+enableLatestRenderer();
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; //remove PROVIDER_GOOGLE import if not using Google Maps
 
-
-// const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
-const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
+const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
+// const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
 export const LocationScreen = () => {
+  //Map Variables
+  const [region, setRegion] = useState(null);
+
   //GPS Variables 
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [currentLongitude, setCurrentLongitude] = useState('');
@@ -106,11 +111,11 @@ export const LocationScreen = () => {
     }).catch(error => console.log(error));
   }
 
-  if(!post){
+  if (!post) {
     console.log('No post!');
   }
 
-  const sendLocation = () =>{
+  const sendLocation = () => {
     callLocation();
     // console.log(currentLatitude);
     createPost(); //will send first a blank Location, then always the previous obtained Location
@@ -119,10 +124,11 @@ export const LocationScreen = () => {
   //Function that sends location every 10s
   useEffect(() => {
     const interval10s = setInterval(() => {
-     sendLocation();
+      sendLocation();
     }, 10000);
     return () => clearInterval(interval10s);
   }, [currentLatitude, currentLongitude, currentAltitude]);
+
 
 
 
@@ -130,8 +136,25 @@ export const LocationScreen = () => {
     <SafeAreaView>
       <StatusBar />
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+        contentInsetAdjustmentBehavior='automatic'
       >
+        <View style={styles.mapContainer}>
+          <MapView
+            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            style={styles.map}
+            initialRegion={{
+              latitude: -23.598,
+              longitude: -46.6473,
+              latitudeDelta: 0.5,
+              longitudeDelta: 0.5,
+            }}
+            zoomEnabled={true}
+            showsUserLocation={true}
+            loadingEnabled={true}
+          >
+          </MapView>
+        </View>
+        
         <View style={styles.container}>
           <Text style={styles.text}>
             Latitude: {currentLatitude}
@@ -149,10 +172,10 @@ export const LocationScreen = () => {
             <Button title="Stop Tracking" onPress={clearLocation} />
           </View>
           <View style={styles.button}>
-              <Button title="POST" onPress={createPost}/>
+            <Button title="POST" onPress={createPost} />
           </View>
           <View style={styles.button}>
-              <Button title="Send Location" onPress={sendLocation}/>
+            <Button title="Send Location" onPress={sendLocation} />
           </View>
         </View>
       </ScrollView>
@@ -161,22 +184,6 @@ export const LocationScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -192,7 +199,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     elevation: 3,
-    flex: 1
+    flex: 1,
   },
   text: {
     fontSize: 16,
@@ -201,4 +208,15 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'black',
   },
+  mapContainer: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    flex: 1,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
 });
+
+
+
