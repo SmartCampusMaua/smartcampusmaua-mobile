@@ -28,6 +28,18 @@ import { enableLatestRenderer } from 'react-native-maps'; //Import for the lates
 enableLatestRenderer();
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; //remove PROVIDER_GOOGLE import if not using Google Maps
 
+//Phone Sensors
+import {
+  accelerometer,
+  gyroscope,
+  magnetometer,
+  barometer,
+  setUpdateIntervalForType,
+  SensorTypes
+} from "react-native-sensors";
+import { map, filter } from "rxjs/operators";
+
+
 const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
 // const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
@@ -111,10 +123,6 @@ export const LocationScreen = () => {
     }).catch(error => console.log(error));
   }
 
-  if (!post) {
-    console.log('No post!');
-  }
-
   const sendLocation = () => {
     callLocation();
     // console.log(currentLatitude);
@@ -130,6 +138,43 @@ export const LocationScreen = () => {
   }, [currentLatitude, currentLongitude, currentAltitude]);
 
 
+
+  //Phone sensors
+  var [accelValue, setAccelValue] = useState({ x:0, y:0, z:0 });
+  var [gyroValue, setGyroValue] = useState({ x:0, y:0, z:0 });
+  var [magValue, setMagValue] = useState({ x:0, y:0, z:0 });
+  var [pressureValue, setPressureValue] = useState(0);
+
+  useEffect(() => {
+    // setUpdateIntervalForType(SensorTypes.accelerometer, 1000); // defaults to 100ms
+    setUpdateIntervalForType(SensorTypes.gyroscope, 1000); // defaults to 100ms
+    // setUpdateIntervalForType(SensorTypes.magnetometer, 1000); // defaults to 100ms
+    // setUpdateIntervalForType(SensorTypes.barometer, 1000); // defaults to 100ms
+    
+    // const accelSubscription = accelerometer.subscribe(({ x, y, z }) =>{
+    //   console.log({ x, y, z })
+    //   accelValue = { x, y, z };
+    // });
+    const gyroSubscription = gyroscope.subscribe(({ x, y, z }) => {
+      console.log({ x, y, z });
+      setGyroValue({ x, y, z });
+    });
+    // const magSubscription = magnetometer.subscribe(({ x, y, z }) =>{
+    //   console.log({ x, y, z })
+    //   magValue = { x, y, z };
+    // });
+    // const barSubscription = barometer.subscribe(({ pressure }) =>{
+    //   console.log({ pressure })
+    //   pressureValue = pressure;
+    // });
+
+    return () => {
+      // accelSubscription.unsubscribe();
+      gyroSubscription.unsubscribe();
+      // magSubscription.unsubscribe();
+      // barSubscription.unsubscribe();
+    }
+  }, [accelValue, gyroValue, magValue, pressureValue]);
 
 
   return (
@@ -154,7 +199,7 @@ export const LocationScreen = () => {
           >
           </MapView>
         </View>
-        
+
         <View style={styles.container}>
           <Text style={styles.text}>
             Latitude: {currentLatitude}
@@ -176,6 +221,11 @@ export const LocationScreen = () => {
           </View>
           <View style={styles.button}>
             <Button title="Send Location" onPress={sendLocation} />
+          </View>
+          <View>
+            <Text style={styles.text}>
+              Gyro x: {gyroValue.x} Gyro y: {gyroValue.y} Gyro z: {gyroValue.z}
+            </Text>
           </View>
         </View>
       </ScrollView>
