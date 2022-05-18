@@ -24,12 +24,32 @@ import Geolocation from '@react-native-community/geolocation'; //Import of Geolo
 
 import axios from 'axios'; //Import of http library
 
+import { enableLatestRenderer } from 'react-native-maps'; //Import for the latest Google Maps map
+enableLatestRenderer();
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; //remove PROVIDER_GOOGLE import if not using Google Maps
+
+//Phone Sensors
+import {
+  accelerometer,
+  gyroscope,
+  magnetometer,
+  barometer,
+  setUpdateIntervalForType,
+  SensorTypes
+} from "react-native-sensors";
+import { map, filter } from "rxjs/operators";
 
 
-// const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
 const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
+<<<<<<< HEAD:src/pages/Location/index.tsx
+export const LocationScreen = () => {
+  //Map Variables
+  const [region, setRegion] = useState(null);
+
+=======
 export const MapScreen = () => {
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
   //GPS Variables 
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [currentLongitude, setCurrentLongitude] = useState('');
@@ -106,6 +126,21 @@ export const MapScreen = () => {
   //   }).catch(error => console.log(error));
   // }
 
+<<<<<<< HEAD:src/pages/Location/index.tsx
+  const sendLocation = () => {
+    callLocation();
+    // console.log(currentLatitude);
+    createPost(); //will send first a blank Location, then always the previous obtained Location
+  }
+
+  //Function that sends location every 10s
+  useEffect(() => {
+    const interval10s = setInterval(() => {
+      sendLocation();
+    }, 10000);
+    return () => clearInterval(interval10s);
+  }, [currentLatitude, currentLongitude, currentAltitude]);
+=======
   // if(!post){
   //   console.log('No post!');
   // }
@@ -124,14 +159,78 @@ export const MapScreen = () => {
   //   }, 10000);
   //   return () => clearInterval(interval10s);
   // }, [currentLatitude, currentLongitude, currentAltitude]);
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
 
   
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} --${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`;
 
 
+  //Phone sensors
+  var [accelValue, setAccelValue] = useState({ x:0, y:0, z:0 });
+  var [gyroValue, setGyroValue] = useState({ x:0, y:0, z:0 });
+  var [magValue, setMagValue] = useState({ x:0, y:0, z:0 });
+  var [pressureValue, setPressureValue] = useState(0);
+
+  useEffect(() => {
+    // setUpdateIntervalForType(SensorTypes.accelerometer, 1000); // defaults to 100ms
+    setUpdateIntervalForType(SensorTypes.gyroscope, 1000); // defaults to 100ms
+    // setUpdateIntervalForType(SensorTypes.magnetometer, 1000); // defaults to 100ms
+    // setUpdateIntervalForType(SensorTypes.barometer, 1000); // defaults to 100ms
+    
+    // const accelSubscription = accelerometer.subscribe(({ x, y, z }) =>{
+    //   console.log({ x, y, z })
+    //   accelValue = { x, y, z };
+    // });
+    const gyroSubscription = gyroscope.subscribe(({ x, y, z }) => {
+      console.log({ x, y, z });
+      setGyroValue({ x, y, z });
+    });
+    // const magSubscription = magnetometer.subscribe(({ x, y, z }) =>{
+    //   console.log({ x, y, z })
+    //   magValue = { x, y, z };
+    // });
+    // const barSubscription = barometer.subscribe(({ pressure }) =>{
+    //   console.log({ pressure })
+    //   pressureValue = pressure;
+    // });
+
+    return () => {
+      // accelSubscription.unsubscribe();
+      gyroSubscription.unsubscribe();
+      // magSubscription.unsubscribe();
+      // barSubscription.unsubscribe();
+    }
+  }, [accelValue, gyroValue, magValue, pressureValue]);
+
+
   return (
+<<<<<<< HEAD:src/pages/Location/index.tsx
+    <SafeAreaView>
+      <StatusBar />
+      <ScrollView
+        contentInsetAdjustmentBehavior='automatic'
+      >
+        <View style={styles.mapContainer}>
+          <MapView
+            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            style={styles.map}
+            initialRegion={{
+              latitude: -23.598,
+              longitude: -46.6473,
+              latitudeDelta: 0.5,
+              longitudeDelta: 0.5,
+            }}
+            zoomEnabled={true}
+            showsUserLocation={true}
+            loadingEnabled={true}
+          >
+          </MapView>
+        </View>
+
+=======
     <SafeAreaView style={styles.container}>
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
         <View style={styles.container}>
           <Text style={styles.text}>
             Date: {date}
@@ -152,33 +251,27 @@ export const MapScreen = () => {
             <Button title="Stop Tracking" onPress={clearLocation} />
           </View>
           <View style={styles.button}>
-              <Button title="POST" onPress={createPost}/>
+            <Button title="POST" onPress={createPost} />
           </View>
           <View style={styles.button}>
+<<<<<<< HEAD:src/pages/Location/index.tsx
+            <Button title="Send Location" onPress={sendLocation} />
+          </View>
+          <View>
+            <Text style={styles.text}>
+              Gyro x: {gyroValue.x} Gyro y: {gyroValue.y} Gyro z: {gyroValue.z}
+            </Text>
+          </View>
+=======
               <Button title="Send Location" onPress={sendLocation}/>
           </View> */}
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
         </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -194,7 +287,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     elevation: 3,
-    flex: 1
+    flex: 1,
   },
   text: {
     fontSize: 16,
@@ -203,4 +296,15 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'black',
   },
+  mapContainer: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    flex: 1,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
 });
+
+
+
