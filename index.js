@@ -2,8 +2,8 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
-import App from './src/pages/TabNavigation';
-import {name as appName} from './app.json';
+import { AppRegistry } from 'react-native';
+import { RootScreen } from './src/pages/RootScreen';
+import { name as appName } from './app.json';
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => RootScreen);

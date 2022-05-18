@@ -42,20 +42,24 @@ import { map, filter } from "rxjs/operators";
 
 const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
+<<<<<<< HEAD:src/pages/Location/index.tsx
 export const LocationScreen = () => {
   //Map Variables
   const [region, setRegion] = useState(null);
 
+=======
+export const MapScreen = () => {
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
   //GPS Variables 
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [currentLongitude, setCurrentLongitude] = useState('');
   const [currentAltitude, setCurrentAltitude] = useState('');
   const [watchID, setWatchID] = useState(0); //GPS tracking ID, needed for tracking it's callbacks, states and to end it
 
-  //GPS Permissions for both OS's
+  // GPS Permissions for both OS's
   const callLocation = () => {
     if (Platform.OS === 'ios') {
-      getLocation();
+      // getLocation();
     } else {
       const requestLocationPermission = async () => {
         const granted = await PermissionsAndroid.request(
@@ -69,7 +73,7 @@ export const LocationScreen = () => {
           }
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          getLocation();
+          // getLocation();
         } else {
           Alert.alert('Location Permition Denied');
         }
@@ -79,49 +83,50 @@ export const LocationScreen = () => {
   }
 
   //Function to obtain location
-  async function getLocation() {
-    await Geolocation.getCurrentPosition(
-      (position) => { //Sucess callback function
-        const currentLatitude = JSON.stringify(position.coords.latitude);
-        const currentLongitude = JSON.stringify(position.coords.longitude);
-        const currentAltitude = JSON.stringify(position.coords.altitude);
-        // console.log(currentLatitude);
-        setCurrentLatitude(currentLatitude);
-        setCurrentLongitude(currentLongitude);
-        setCurrentAltitude(currentAltitude);
-      },
-      (error) => Alert.alert(error.message), //Error callback function
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-    const watchID = Geolocation.watchPosition((position) => {
-      const currentLatitude = JSON.stringify(position.coords.latitude);
-      const currentLongitude = JSON.stringify(position.coords.longitude);
-      const currentAltitude = JSON.stringify(position.coords.altitude);
-      setCurrentLatitude(currentLatitude);
-      setCurrentLongitude(currentLongitude);
-      setCurrentAltitude(currentAltitude);
-    });
-    setWatchID(watchID);
-  }
+  // async function getLocation() {
+  //   await Geolocation.getCurrentPosition(
+  //     (position) => { //Sucess callback function
+  //       const currentLatitude = JSON.stringify(position.coords.latitude);
+  //       const currentLongitude = JSON.stringify(position.coords.longitude);
+  //       const currentAltitude = JSON.stringify(position.coords.altitude);
+  //       // console.log(currentLatitude);
+  //       setCurrentLatitude(currentLatitude);
+  //       setCurrentLongitude(currentLongitude);
+  //       setCurrentAltitude(currentAltitude);
+  //     },
+  //     (error) => Alert.alert(error.message), //Error callback function
+  //     { enableHighAccuracy: true, timeout: 30000, maximumAge: 1000 }
+  //   );
+  //   const watchID = Geolocation.watchPosition((position) => {
+  //     const currentLatitude = JSON.stringify(position.coords.latitude);
+  //     const currentLongitude = JSON.stringify(position.coords.longitude);
+  //     const currentAltitude = JSON.stringify(position.coords.altitude);
+  //     setCurrentLatitude(currentLatitude);
+  //     setCurrentLongitude(currentLongitude);
+  //     setCurrentAltitude(currentAltitude);
+  //   });
+  //   setWatchID(watchID);
+  // }
 
   //Function do end GPS tracking 
-  const clearLocation = () => {
-    Geolocation.clearWatch(watchID);
-  }
+  // const clearLocation = () => {
+  //   Geolocation.clearWatch(watchID);
+  // }
 
   //Axios HTTP 
   const [post, setPost] = React.useState(null);
 
-  function createPost() {
-    axios.post(baseURL, {
-      lat: currentLatitude,
-      lon: currentLongitude,
-      alt: currentAltitude,
-    }).then((response) => {
-      setPost(response.data);
-    }).catch(error => console.log(error));
-  }
+  // function createPost() {
+  //   axios.post(baseURL, {
+  //     lat: currentLatitude,
+  //     lon: currentLongitude,
+  //     alt: currentAltitude,
+  //   }).then((response) => {
+  //     setPost(response.data);
+  //   }).catch(error => console.log(error));
+  // }
 
+<<<<<<< HEAD:src/pages/Location/index.tsx
   const sendLocation = () => {
     callLocation();
     // console.log(currentLatitude);
@@ -135,7 +140,30 @@ export const LocationScreen = () => {
     }, 10000);
     return () => clearInterval(interval10s);
   }, [currentLatitude, currentLongitude, currentAltitude]);
+=======
+  // if(!post){
+  //   console.log('No post!');
+  // }
 
+  // function sendLocation() {
+  //    callLocation();
+
+  //   // console.log(currentLatitude);
+  //   createPost(); //will send first a blank Location, then always the previous obtained Location
+  // }
+
+  //Function that sends location every 10s
+  // useEffect(() => {
+  //   const interval10s = setInterval(() => {
+  //    sendLocation();
+  //   }, 10000);
+  //   return () => clearInterval(interval10s);
+  // }, [currentLatitude, currentLongitude, currentAltitude]);
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
+
+  
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()} --${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`;
 
 
   //Phone sensors
@@ -177,6 +205,7 @@ export const LocationScreen = () => {
 
 
   return (
+<<<<<<< HEAD:src/pages/Location/index.tsx
     <SafeAreaView>
       <StatusBar />
       <ScrollView
@@ -199,7 +228,13 @@ export const LocationScreen = () => {
           </MapView>
         </View>
 
+=======
+    <SafeAreaView style={styles.container}>
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
         <View style={styles.container}>
+          <Text style={styles.text}>
+            Date: {date}
+          </Text>
           <Text style={styles.text}>
             Latitude: {currentLatitude}
           </Text>
@@ -209,7 +244,7 @@ export const LocationScreen = () => {
           <Text style={styles.text}>
             Altitude: {currentAltitude}
           </Text>
-          <View style={styles.button}>
+          {/* <View style={styles.button}>
             <Button title="Get Location" onPress={callLocation} />
           </View>
           <View style={styles.button}>
@@ -219,6 +254,7 @@ export const LocationScreen = () => {
             <Button title="POST" onPress={createPost} />
           </View>
           <View style={styles.button}>
+<<<<<<< HEAD:src/pages/Location/index.tsx
             <Button title="Send Location" onPress={sendLocation} />
           </View>
           <View>
@@ -226,8 +262,11 @@ export const LocationScreen = () => {
               Gyro x: {gyroValue.x} Gyro y: {gyroValue.y} Gyro z: {gyroValue.z}
             </Text>
           </View>
+=======
+              <Button title="Send Location" onPress={sendLocation}/>
+          </View> */}
+>>>>>>> d787f1dfa1b83d0a46be57ac4f1118debc61a046:src/pages/MapScreen/index.tsx.bak
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
