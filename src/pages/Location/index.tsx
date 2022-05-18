@@ -40,8 +40,7 @@ import {
 import { map, filter } from "rxjs/operators";
 
 
-const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
-// const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
+const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
 export const LocationScreen = () => {
   //Map Variables
