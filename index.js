@@ -2,8 +2,8 @@
  * @format
  */
 
-import {AppRegistry} from 'react-native';
-import { BootSplashScreen } from './src/pages/BoostSplashScreen';
-import {name as appName} from './app.json';
+import { AppRegistry } from 'react-native';
+import { RootScreen } from './src/pages/RootScreen';
+import { name as appName } from './app.json';
 
-AppRegistry.registerComponent(appName, () => BootSplashScreen);
+AppRegistry.registerComponent(appName, () => RootScreen);

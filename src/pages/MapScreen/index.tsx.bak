@@ -29,7 +29,7 @@ import axios from 'axios'; //Import of http library
 // const baseURL = 'http://192.168.68.123:1880/gpslocation'; //debugCB
 const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 
-export const LocationScreen = () => {
+export const MapScreen = () => {
   //GPS Variables 
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [currentLongitude, setCurrentLongitude] = useState('');

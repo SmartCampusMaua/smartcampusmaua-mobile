@@ -1,11 +1,30 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react';
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import WebView from 'react-native-webview';
 
 
-export function HomeScreen() {
+type Props = {};
+type State = {};
+
+export class HomeScreen extends Component<Props, State> {
+  state = {};
+
+  render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
-      </View>
+      <SafeAreaView style={styles.container}>
+      {/* <SafeAreaView> */}
+
+          <WebView
+            source={{ uri: 'https://smartcampus.maua.br' }}
+            nestedScrollEnabled={true}
+          />
+      </SafeAreaView>
     );
   }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

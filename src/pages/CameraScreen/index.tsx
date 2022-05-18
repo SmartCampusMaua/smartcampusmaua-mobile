@@ -1,16 +1,16 @@
-import { Camera, CameraType } from 'react-native-camera-kit';
 import React, { Component } from 'react';
+import { Camera, CameraType } from 'react-native-camera-kit';
 
-    export default class CameraExample extends Component {
-        camera: any;
+export class BasicCameraScreen extends Component {
+  camera: any;
 
-    render() {
+  render() {
     return (
-        <Camera
-            ref={(ref: any) => (this.camera = ref)}
-            style={{ flex: 1 }}
-            cameraType={CameraType.Front} // front/back(default)
-        />
+      <Camera
+        ref={(ref: any) => (this.camera = ref)}
+        style={{ flex: 1 }}
+        cameraType={CameraType.Front} // front/back(default)
+      />
     )
-    }
+  }
 }
