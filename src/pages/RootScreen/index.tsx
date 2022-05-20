@@ -36,7 +36,7 @@ export const RootScreen = () => {
       Animated.stagger(250, [
         Animated.spring(translateY.current, {
           useNativeDriver: true,
-          toValue: 350,
+          toValue: -150,
         }),
         Animated.spring(translateY.current, {
           useNativeDriver: true,
@@ -47,7 +47,7 @@ export const RootScreen = () => {
       Animated.timing(opacity.current, {
         useNativeDriver: true,
         toValue: 0,
-        duration: 150,
+        duration: 130,
         delay: 750,
       }).start(() => {
         setBootSplashIsVisible(false);
@@ -61,10 +61,6 @@ export const RootScreen = () => {
     bootSplashLogoIsLoaded && init();
   }, [bootSplashLogoIsLoaded]);
 
-
-  useEffect(() => {
-    bootSplashLogoIsLoaded && init();
-  }, [bootSplashLogoIsLoaded]);
 
   const isLoggedIn = true
 
