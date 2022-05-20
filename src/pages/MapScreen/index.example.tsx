@@ -202,11 +202,33 @@ export const MapScreen = () => {
   }, [stopForegroundService]);
 
 
+  // const getCurrentPosition = async () => {
+  //   let { status } = await Location.requestPermissionsAsync();
+
+  //   if (status !== "granted") {
+  //     Alert.alert("Ops!", "Permissão de acesso a localização negada.");
+  //   }
+
+  //   let {
+  //     coords: { latitude, longitude },
+  //   } = await Location.getCurrentPositionAsync();
+
+  //   setRegion({ latitude, longitude, latitudeDelta: 100, longitudeDelta: 100 });
+  // };
+
+  // useEffect(() => {
+  //   getCurrentPosition();
+  // }, []);
+
+
+
+
   useEffect(() => {
     return () => {
       removeLocationUpdates();
     };
   }, [removeLocationUpdates]);
+
 
 
   return (

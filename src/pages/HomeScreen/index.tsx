@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import React, { Component, useRef } from 'react';
+import { ActivityIndicator, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import WebView from 'react-native-webview';
 
 
@@ -16,12 +16,48 @@ export class HomeScreen extends Component<Props, State> {
 
           <WebView
             source={{ uri: 'https://smartcampus.maua.br' }}
-            nestedScrollEnabled={true}
           />
       </SafeAreaView>
     );
   }
 }
+
+
+// TODO: HomeScreen become a Functional COmponent and Backbutton in WebView
+// export const HomeScreen = ({navigation}: any) => {
+//   const ref = useRef(null);
+
+//   return (
+//     <SafeAreaView>
+//     <WebView
+//     ref={ref}
+//     source={{ url: "https://smartcampus.maua.br" }}
+//     startInLoadingState
+//     renderLoading={() => (
+//       <View style={{ flex: 1, alignItems: 'center' }}>
+//         <ActivityIndicator size="large" />
+//       </View>
+//     )}
+//     allowsBackForwardNavigationGestures
+//     onNavigationStateChange={(navState) => {
+//       if (navState.canGoBack) {
+//         navigation.setParams({
+//           headerLeftInfo: {
+//             title: '',
+//             onPress: () => ref.current.goBack(),
+//           },
+//         });
+//       } else {
+//         navigation.setParams({
+//           headerLeftInfo: null,
+//         });
+//       }
+//     }}
+//     />
+//     </SafeAreaView>
+
+//   )
+// }
 
 const styles = StyleSheet.create({
   container: {
