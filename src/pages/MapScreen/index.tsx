@@ -6,9 +6,199 @@ import VIForegroundService from '@voximplant/react-native-foreground-service';
 import appConfig from './app.json';
 
 import { MapView } from '../../components/MapView'
+import xmlbuilder from 'xmlbuilder';
 
 
 export const MapScreen = () => {
+/////////////////////////////TESTES/////////////////////////////////////////////////////
+  // XML Builder
+  var builder = require('xmlbuilder');
+  // var feedObj = {
+  //   'TrainingCenterDatabase':{
+  //     '@xmlns': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2',
+  //     '@xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+  //     '@xmlns:schemaLocation':'http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd',
+  //     'Activities':{
+  //       'Activity':{ '@Sport':'Biking',
+  //       'Id':'2010-06-26T10:06:11Z',
+  //       'Lap':{'@StartTime':'2010-06-26T10:06:11Z',
+  //         'TotalTimeSeconds':'906.1800000',
+  //         'DistanceMeters':'9762.4433594',
+  //         'MaximumSpeed':'15.2404995',
+  //         'Calories':'493',
+  //         'AverageHeartRateBpm':{'@xsi:type':'HeartRateInBeatsPerMinute_t',
+  //             'Value':'179'
+  //             },
+  //         'MaximumHeartRateBpm':{'@xsi:type':'HeartRateInBeatsPerMinute_t',
+  //             'Value':'194'
+  //           },
+  //         'Intensity':'Active',
+  //         'Cadence':'84',
+  //         'TriggerMethod':'Location',
+  //         'Track':{
+  //             'Trackpoint':{
+  //               'Time':'2010-06-26T10:06:11Z',
+  //               'Position':{
+  //                 'LatitudeDegrees':'40.7780135',
+  //                 'LongitudeDegrees':'-73.9665795'
+  //               },
+  //               'AltitudeMeters':'36.1867676',
+  //               'DistanceMeters':'0.0629519',
+  //               'HeartRateBpm':{'@xsi:type':'HeartRateInBeatsPerMinute_t',
+  //                 'Value':'148'
+  //               },
+  //               'SensorState':'Absent',
+  //             },
+  //             'Trackpoint': {
+  //               'Time': '2010-06-2T10:06:11Z',
+  //               'Position': {
+  //                 'LatitudeDegrees': '40.7780135',
+  //                 'LongitudeDegrees': '-73.9665795'
+  //               },
+  //               'AltitudeMeters': '36.1867676',
+  //               'DistanceMeters': '0.0629519',
+  //               'HeartRateBpm': {
+  //                 '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+  //                 'Value': '200'
+  //               },
+  //               'SensorState': 'Absent',
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  // };
+
+  // var newTrackpoint = {
+  //   'Trackpoint': {
+  //     'Time': '2010-06-2T10:06:11Z',
+  //     'Position': {
+  //       'LatitudeDegrees': '40.7780135',
+  //       'LongitudeDegrees': '-73.9665795'
+  //     },
+  //     'AltitudeMeters': '36.1867676',
+  //     'DistanceMeters': '0.0629519',
+  //     'HeartRateBpm': {
+  //       '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+  //       'Value': '100'
+  //     },
+  //     'SensorState': 'Absent',
+  //   }
+  // };
+
+  // var newTrackpoint2 = {
+  //   'Trackpoint': {
+  //     'Time': '2010-06-2T10:06:11Z',
+  //     'Position': {
+  //       'LatitudeDegrees': '40.7780135',
+  //       'LongitudeDegrees': '-73.9665795'
+  //     },
+  //     'AltitudeMeters': '36.1867676',
+  //     'DistanceMeters': '0.0629519',
+  //     'HeartRateBpm': {
+  //       '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+  //       'Value': '200'
+  //     },
+  //     'SensorState': 'Absent',
+  //   }
+  // };
+
+  // var trackpoints = {
+  //   ...newTrackpoint,
+  //   ...newTrackpoint2,
+
+  // };
+
+  // var feedObj = {
+  //   'TrainingCenterDatabase': {
+  //     '@xmlns': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2',
+  //     '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+  //     '@xmlns:schemaLocation': 'http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd',
+  //     'Activities': {
+  //       'Activity': {
+  //         '@Sport': 'Biking',
+  //         'Id': '2010-06-26T10:06:11Z',
+  //         'Lap': {
+  //           '@StartTime': '2010-06-26T10:06:11Z',
+  //           'TotalTimeSeconds': '906.1800000',
+  //           'DistanceMeters': '9762.4433594',
+  //           'MaximumSpeed': '15.2404995',
+  //           'Calories': '493',
+  //           'AverageHeartRateBpm': {
+  //             '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+  //             'Value': '179'
+  //           },
+  //           'MaximumHeartRateBpm': {
+  //             '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+  //             'Value': '194'
+  //           },
+  //           'Intensity': 'Active',
+  //           'Cadence': '84',
+  //           'TriggerMethod': 'Location',
+  //           'Track': {
+  //             ...trackpoints
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  // };
+
+
+  // var feed = builder.create('feed', { encoding: 'utf-8' })
+  // .att('xmlns', 'http://www.w3.org/2005/Atom')
+  // .ele('title', { 'type': 'text'}, 'dive into mark').up()
+  // .ele('subtitle', { 'type': 'html' }, 'A <em>lot</em> of effort went into making this effortless').up()
+  // .ele('updated', '2005-07-31T12:29:29Z').up()
+  // .ele('id', 'tag:example.org,2003:3').up()
+  // .ele('link', { 'rel': 'alternate', 'type': 'text/html', 'hreflang': 'en', 'href': 'http://example.org/' }).up()
+  // .ele('link', { 'rel': 'self', 'type': 'application/atom+xml', 'href': 'http://example.org/feed.atom' }).up()
+  // .ele('rights', 'Copyright (c) 2003, Mark Pilgrim').up()
+  // .ele('generator', { 'uri': 'http://www.example.com/', 'version': '1.0' }, 'Example Toolkit').up()
+  // .ele('entry')
+  //   .ele('title', 'Atom draft-07 snapshot').up()
+  //   .ele('link', { 'rel': 'alternate', 'type': 'text/html', 'href': 'http://example.org/2005/04/02/atom' }).up()
+  //   .ele('link', { 'rel': 'enclosure', 'type': 'audio/mpeg', 'length': '1337', 'href': 'http://example.org/audio/ph34r_my_podcast.mp3' }).up()
+  //   .ele('id', 'tag:example.org,2003:3.2397').up()
+  //   .ele('updated', '2005-07-31T12:29:29Z').up()
+  //   .ele('published', '2003-12-13T08:29:29-04:00').up()
+  //   .ele('author')
+  //     .ele('name', 'Mark Pilgrim').up()
+  //     .ele('uri', 'http://example.org/').up()
+  //     .ele('email', 'f8dy@example.com').up()
+  //   .up()
+  //   .ele('contributor')
+  //     .ele('name', 'Sam Ruby').up()
+  //   .up()
+  //   .ele('contributor')
+  //     .ele('name', 'Joe Gregorio').up()
+  //   .up()
+  //   .ele('content', { 'type': 'xhtml', 'xml:lang': 'en', 'xml:base': 'http://diveintomark.org/' })
+  //     .ele('div', { 'xmlns': 'http://www.w3.org/1999/xhtml' })
+  //       .ele('p')
+  //         .ele('i', '[Update: The Atom draft is finished.]').up()
+  //       .up()
+  //     .up()
+  //   .up()
+  // .up()
+
+  xmlbuilder.begin(function(chunk) { process.stdout.write(chunk); })
+  .dec()
+  .ele('root')
+    .ele('xmlbuilder').up()
+  .end();
+
+
+  // var feed = builder.create(feedObj, { encoding: 'utf-8' }, { standalone: false })
+  // console.log(feed.end({ pretty: true }));
+
+
+
+  /////////////////////////////////TESTE///////////////////////////////
+
   // const [region, setRegion] = useState<Region>();
   const [forceLocation, setForceLocation] = useState(true);
   const [highAccuracy, setHighAccuracy] = useState(true);
@@ -209,9 +399,10 @@ export const MapScreen = () => {
   }, [removeLocationUpdates]);
 
 
+
   return (
     <View style={styles.mainContainer}>
-      <View  style={styles.mapContainer}>
+      <View style={styles.mapContainer}>
         <MapView
           coords={location?.coords || null}
         />
@@ -221,7 +412,7 @@ export const MapScreen = () => {
         contentContainerStyle={styles.contentContainer}
       >
         <View>
-          <View style={styles.option}> 
+          <View style={styles.option}>
             <Text>Enable High Accuracy</Text>
             <Switch onValueChange={setHighAccuracy} value={highAccuracy} />
           </View>
