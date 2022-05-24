@@ -10,66 +10,23 @@ import xmlbuilder from 'xmlbuilder';
 
 
 export const MapScreen = () => {
-/////////////////////////////TESTES/////////////////////////////////////////////////////
+  /////////////////////////////TESTES/////////////////////////////////////////////////////
   // XML Builder
   var builder = require('xmlbuilder');
-  // var feedObj = {
-  //   'TrainingCenterDatabase':{
-  //     '@xmlns': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2',
-  //     '@xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
-  //     '@xmlns:schemaLocation':'http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd',
-  //     'Activities':{
-  //       'Activity':{ '@Sport':'Biking',
-  //       'Id':'2010-06-26T10:06:11Z',
-  //       'Lap':{'@StartTime':'2010-06-26T10:06:11Z',
-  //         'TotalTimeSeconds':'906.1800000',
-  //         'DistanceMeters':'9762.4433594',
-  //         'MaximumSpeed':'15.2404995',
-  //         'Calories':'493',
-  //         'AverageHeartRateBpm':{'@xsi:type':'HeartRateInBeatsPerMinute_t',
-  //             'Value':'179'
-  //             },
-  //         'MaximumHeartRateBpm':{'@xsi:type':'HeartRateInBeatsPerMinute_t',
-  //             'Value':'194'
-  //           },
-  //         'Intensity':'Active',
-  //         'Cadence':'84',
-  //         'TriggerMethod':'Location',
-  //         'Track':{
-  //             'Trackpoint':{
-  //               'Time':'2010-06-26T10:06:11Z',
-  //               'Position':{
-  //                 'LatitudeDegrees':'40.7780135',
-  //                 'LongitudeDegrees':'-73.9665795'
-  //               },
-  //               'AltitudeMeters':'36.1867676',
-  //               'DistanceMeters':'0.0629519',
-  //               'HeartRateBpm':{'@xsi:type':'HeartRateInBeatsPerMinute_t',
-  //                 'Value':'148'
-  //               },
-  //               'SensorState':'Absent',
-  //             },
-  //             'Trackpoint': {
-  //               'Time': '2010-06-2T10:06:11Z',
-  //               'Position': {
-  //                 'LatitudeDegrees': '40.7780135',
-  //                 'LongitudeDegrees': '-73.9665795'
-  //               },
-  //               'AltitudeMeters': '36.1867676',
-  //               'DistanceMeters': '0.0629519',
-  //               'HeartRateBpm': {
-  //                 '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-  //                 'Value': '200'
-  //               },
-  //               'SensorState': 'Absent',
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
 
-  // };
+  // File Creation
+  var RNFS = require('react-native-fs');
+  var path = RNFS.DocumentDirectoryPath + '/test.tcx';
+  console.log(path);
+  // write the file
+  RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
+  .then(() => {
+    console.log('FILE WRITTEN!');
+  })
+  .catch(() => {
+    console.log('FILE NOT WRITTEN');
+  });
+  
 
   // var newTrackpoint = {
   //   'Trackpoint': {
@@ -108,7 +65,6 @@ export const MapScreen = () => {
   // var trackpoints = {
   //   ...newTrackpoint,
   //   ...newTrackpoint2,
-
   // };
 
   // var feedObj = {
@@ -144,56 +100,92 @@ export const MapScreen = () => {
   //       }
   //     }
   //   }
-
   // };
+  // var feed = builder.create(feedObj, { encoding: 'utf-8' }, { standalone: false })
 
 
-  // var feed = builder.create('feed', { encoding: 'utf-8' })
-  // .att('xmlns', 'http://www.w3.org/2005/Atom')
-  // .ele('title', { 'type': 'text'}, 'dive into mark').up()
-  // .ele('subtitle', { 'type': 'html' }, 'A <em>lot</em> of effort went into making this effortless').up()
-  // .ele('updated', '2005-07-31T12:29:29Z').up()
-  // .ele('id', 'tag:example.org,2003:3').up()
-  // .ele('link', { 'rel': 'alternate', 'type': 'text/html', 'hreflang': 'en', 'href': 'http://example.org/' }).up()
-  // .ele('link', { 'rel': 'self', 'type': 'application/atom+xml', 'href': 'http://example.org/feed.atom' }).up()
-  // .ele('rights', 'Copyright (c) 2003, Mark Pilgrim').up()
-  // .ele('generator', { 'uri': 'http://www.example.com/', 'version': '1.0' }, 'Example Toolkit').up()
-  // .ele('entry')
-  //   .ele('title', 'Atom draft-07 snapshot').up()
-  //   .ele('link', { 'rel': 'alternate', 'type': 'text/html', 'href': 'http://example.org/2005/04/02/atom' }).up()
-  //   .ele('link', { 'rel': 'enclosure', 'type': 'audio/mpeg', 'length': '1337', 'href': 'http://example.org/audio/ph34r_my_podcast.mp3' }).up()
-  //   .ele('id', 'tag:example.org,2003:3.2397').up()
-  //   .ele('updated', '2005-07-31T12:29:29Z').up()
-  //   .ele('published', '2003-12-13T08:29:29-04:00').up()
-  //   .ele('author')
-  //     .ele('name', 'Mark Pilgrim').up()
-  //     .ele('uri', 'http://example.org/').up()
-  //     .ele('email', 'f8dy@example.com').up()
-  //   .up()
-  //   .ele('contributor')
-  //     .ele('name', 'Sam Ruby').up()
-  //   .up()
-  //   .ele('contributor')
-  //     .ele('name', 'Joe Gregorio').up()
-  //   .up()
-  //   .ele('content', { 'type': 'xhtml', 'xml:lang': 'en', 'xml:base': 'http://diveintomark.org/' })
-  //     .ele('div', { 'xmlns': 'http://www.w3.org/1999/xhtml' })
-  //       .ele('p')
-  //         .ele('i', '[Update: The Atom draft is finished.]').up()
+  // TCX builder begining
+  var feed = builder.create('TrainingCenterDatabase', { encoding: 'UTF-8' }, {standalone: false})
+  .att('xmlns', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2')
+  .att('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance')
+  .att('xmlns:schemaLocation','http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd')
+  .ele('Activites',)
+    .ele('Activity', { 'Sport': 'Biking'})
+      .ele('Id', '2010-06-26T10:06:11Z').up()
+      .ele('Lap', { 'StartTime':'2010-06-26T10:06:11Z'})
+        .ele('TotalTimeSeconds', '906.1800000').up()
+        .ele('DistanceMeters', '9762.4433594').up()
+        .ele('MaximumSpeed', '15.2404995').up()
+        .ele('Calories', '493').up()
+        .ele('AverageHeartRateBpm', {'xsi:type': 'HeartRateInBeatsPerMinute_t'})
+          .ele('Value', '179').up()
+        .up()
+        .ele('MaximumHeartRateBpm', {'xsi:type': 'HeartRateInBeatsPerMinute_t'})
+          .ele('Value', '194').up()
+        .up()
+        .ele('Intensity', 'Active').up()
+        .ele('Cadence', '84').up()
+        .ele('TriggerMethod', 'Location').up()
+        .ele('Track')
+          .ele('Trackpoint')
+            .ele('Time', '2010-06-26T10:06:11Z').up()
+            .ele('Position')
+              .ele('LatitudeDegrees','40.7780135').up()
+              .ele('LongitudeDegrees','-73.9665795').up()
+            .up()
+            .ele('AltitudeMeters', '36.1867676').up()
+            .ele('DistanceMeters', '0.0629519').up()
+            .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
+              .ele('Value', '148').up()
+            .up()
+            .ele('SensorState', 'Absent').up()
+          .up()
   //       .up()
   //     .up()
   //   .up()
   // .up()
 
-  xmlbuilder.begin(function(chunk) { process.stdout.write(chunk); })
-  .dec()
-  .ele('root')
-    .ele('xmlbuilder').up()
-  .end();
+  // TCX builder middle 
+  feed.ele('Trackpoint')
+    .ele('Time', '2010-06-26T10:06:11Z').up()
+    .ele('Position')
+      .ele('LatitudeDegrees','40.7780135').up()
+      .ele('LongitudeDegrees','-73.9665795').up()
+    .up()
+    .ele('AltitudeMeters', '36.1867676').up()
+    .ele('DistanceMeters', '0.0629519').up()
+    .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
+      .ele('Value', '148').up()
+    .up()
+    .ele('SensorState', 'Absent').up()
+  .up()
 
+  // TCX builder middle 2
+  var testTime = '2022-22-22T22:22:22Z';
+  var testLatitude = 20.7780135;
+  var testLongitude = -10.7780135;
+  var testAltitude = 30.1867676;
+  var testDistance = 0.1000000;
+  var testHeartRate = 200;
+  var testSensorState = 'Absent';
+  feed.ele('Trackpoint')
+    .ele('Time', `${testTime}`).up()
+    .ele('Position')
+      .ele('LatitudeDegrees',`${testLatitude}`).up()
+      .ele('LongitudeDegrees',`${testLongitude}`).up()
+    .up()
+    .ele('AltitudeMeters', `${testAltitude}`).up()
+    .ele('DistanceMeters', `${testDistance}`).up()
+    .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
+      .ele('Value', `${testHeartRate}`).up()
+    .up()
+    .ele('SensorState', `${testSensorState}`).up()
+  .up()
 
-  // var feed = builder.create(feedObj, { encoding: 'utf-8' }, { standalone: false })
-  // console.log(feed.end({ pretty: true }));
+  // TCX builder end
+  feed.up().up().up().up()
+
+  console.log(feed.end({ pretty: true }));
 
 
 
