@@ -8,6 +8,21 @@ import appConfig from './app.json';
 import { MapView } from '../../components/MapView'
 import xmlbuilder from 'xmlbuilder';
 
+interface TrackpointProps {
+  Time: string;
+//   Position: {
+//     LatitudeDegrees: string;
+//     LongitudeDegrees: string;
+//   };
+//   AltitudeMeters: string;
+//   DistanceMeters: string;
+//   HeartRateBpm : {
+//     '@xsi:type': string;  
+//     Value: string;
+//   };
+//   SensorState: string;
+}
+
 
 export const MapScreen = () => {
   /////////////////////////////TESTES/////////////////////////////////////////////////////
@@ -15,17 +30,17 @@ export const MapScreen = () => {
   var builder = require('xmlbuilder');
 
   // File Creation
-  var RNFS = require('react-native-fs');
-  var path = RNFS.DocumentDirectoryPath + '/test.tcx';
-  console.log(path);
-  // write the file
-  RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
-  .then(() => {
-    console.log('FILE WRITTEN!');
-  })
-  .catch(() => {
-    console.log('FILE NOT WRITTEN');
-  });
+  // var RNFS = require('react-native-fs');
+  // var path = RNFS.DocumentDirectoryPath + '/test.txt';
+  // console.log(path);
+  // // write the file
+  // RNFS.writeFile(path, 'Lorem ipsum dolor sit amet', 'utf8')
+  // .then(() => {
+  //   console.log('FILE WRITTEN!');
+  // })
+  // .catch(() => {
+  //   console.log('FILE NOT WRITTEN');
+  // });
   
 
   // var newTrackpoint = {
@@ -44,6 +59,46 @@ export const MapScreen = () => {
   //     'SensorState': 'Absent',
   //   }
   // };
+
+  // const [trackpoint, setTrackpoint] = useState<TrackpointProps>({
+  //   Time: '',
+  //   Position: {
+  //     LatitudeDegrees : '',
+  //     LongitudeDegrees: '',
+  //   },
+  //   AltitudeMeters: '',
+  //   DistanceMeters: '',
+  //   HeartRateBpm : {
+  //     '@xsi:type': '',  
+  //     Value: '',
+  //   },
+  //   SensorState: '',
+  // })
+
+  const [trackpoint, setTrackpoint] = useState<TrackpointProps[]>([])
+
+  const data = [{
+    Time: 'qualquerString'
+  }]
+
+
+  setTrackpoint(data);
+
+  function tcxBuilder(trackpoint: any) {
+    const newTrackpoint = trackpoint.map(function(trackpoint: any){
+      return {
+        // ...trackpoint,
+        Time : trackpoint.Time
+      }
+    }) 
+    return setTrackpoint(newTrackpoint);
+  }
+
+  useEffect(() => {
+    tcxBuilder(trackpoint);
+    console.log(`newTrackpoint: ${JSON.stringify(trackpoint)}`);
+  });
+
 
   // var newTrackpoint2 = {
   //   'Trackpoint': {
@@ -94,7 +149,34 @@ export const MapScreen = () => {
   //           'Cadence': '84',
   //           'TriggerMethod': 'Location',
   //           'Track': {
-  //             ...trackpoints
+  //             'Trackpoint': [{
+
+  //               'Time': '2010-06-2T10:06:11Z',
+  //               'Position': {
+  //                 'LatitudeDegrees': '40.7780135',
+  //                 'LongitudeDegrees': '-73.9665795'
+  //               },
+  //               'AltitudeMeters': '36.1867676',
+  //               'DistanceMeters': '0.0629519',
+  //               'HeartRateBpm': {
+  //                 '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+  //                 'Value': '100'
+  //               },
+  //               'SensorState': 'Absent',
+  //             },
+  //             {'Time': '2010-06-2T10:06:11Z',
+  //               'Position': {
+  //                 'LatitudeDegrees': '40.7780135',
+  //                 'LongitudeDegrees': '-73.9665795'
+  //               },
+  //               'AltitudeMeters': '36.1867676',
+  //               'DistanceMeters': '0.0629519',
+  //               'HeartRateBpm': {
+  //                 '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+  //                 'Value': '200'
+  //               },
+  //               'SensorState': 'Absent',
+  //             }]
   //           }
   //         }
   //       }
@@ -104,88 +186,88 @@ export const MapScreen = () => {
   // var feed = builder.create(feedObj, { encoding: 'utf-8' }, { standalone: false })
 
 
-  // TCX builder begining
-  var feed = builder.create('TrainingCenterDatabase', { encoding: 'UTF-8' }, {standalone: false})
-  .att('xmlns', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2')
-  .att('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance')
-  .att('xmlns:schemaLocation','http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd')
-  .ele('Activites',)
-    .ele('Activity', { 'Sport': 'Biking'})
-      .ele('Id', '2010-06-26T10:06:11Z').up()
-      .ele('Lap', { 'StartTime':'2010-06-26T10:06:11Z'})
-        .ele('TotalTimeSeconds', '906.1800000').up()
-        .ele('DistanceMeters', '9762.4433594').up()
-        .ele('MaximumSpeed', '15.2404995').up()
-        .ele('Calories', '493').up()
-        .ele('AverageHeartRateBpm', {'xsi:type': 'HeartRateInBeatsPerMinute_t'})
-          .ele('Value', '179').up()
-        .up()
-        .ele('MaximumHeartRateBpm', {'xsi:type': 'HeartRateInBeatsPerMinute_t'})
-          .ele('Value', '194').up()
-        .up()
-        .ele('Intensity', 'Active').up()
-        .ele('Cadence', '84').up()
-        .ele('TriggerMethod', 'Location').up()
-        .ele('Track')
-          .ele('Trackpoint')
-            .ele('Time', '2010-06-26T10:06:11Z').up()
-            .ele('Position')
-              .ele('LatitudeDegrees','40.7780135').up()
-              .ele('LongitudeDegrees','-73.9665795').up()
-            .up()
-            .ele('AltitudeMeters', '36.1867676').up()
-            .ele('DistanceMeters', '0.0629519').up()
-            .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
-              .ele('Value', '148').up()
-            .up()
-            .ele('SensorState', 'Absent').up()
-          .up()
+  // // TCX builder begining
+  // var feed = builder.create('TrainingCenterDatabase', { encoding: 'UTF-8' }, {standalone: false})
+  // .att('xmlns', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2')
+  // .att('xmlns:xsi','http://www.w3.org/2001/XMLSchema-instance')
+  // .att('xmlns:schemaLocation','http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd')
+  // .ele('Activites',)
+  //   .ele('Activity', { 'Sport': 'Biking'})
+  //     .ele('Id', '2010-06-26T10:06:11Z').up()
+  //     .ele('Lap', { 'StartTime':'2010-06-26T10:06:11Z'})
+  //       .ele('TotalTimeSeconds', '906.1800000').up()
+  //       .ele('DistanceMeters', '9762.4433594').up()
+  //       .ele('MaximumSpeed', '15.2404995').up()
+  //       .ele('Calories', '493').up()
+  //       .ele('AverageHeartRateBpm', {'xsi:type': 'HeartRateInBeatsPerMinute_t'})
+  //         .ele('Value', '179').up()
   //       .up()
-  //     .up()
+  //       .ele('MaximumHeartRateBpm', {'xsi:type': 'HeartRateInBeatsPerMinute_t'})
+  //         .ele('Value', '194').up()
+  //       .up()
+  //       .ele('Intensity', 'Active').up()
+  //       .ele('Cadence', '84').up()
+  //       .ele('TriggerMethod', 'Location').up()
+  //       .ele('Track')
+  //         .ele('Trackpoint')
+  //           .ele('Time', '2010-06-26T10:06:11Z').up()
+  //           .ele('Position')
+  //             .ele('LatitudeDegrees','40.7780135').up()
+  //             .ele('LongitudeDegrees','-73.9665795').up()
+  //           .up()
+  //           .ele('AltitudeMeters', '36.1867676').up()
+  //           .ele('DistanceMeters', '0.0629519').up()
+  //           .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
+  //             .ele('Value', '148').up()
+  //           .up()
+  //           .ele('SensorState', 'Absent').up()
+  //         .up()
+  // //       .up()
+  // //     .up()
+  // //   .up()
+  // // .up()
+
+  // // TCX builder middle 
+  // feed.ele('Trackpoint')
+  //   .ele('Time', '2010-06-26T10:06:11Z').up()
+  //   .ele('Position')
+  //     .ele('LatitudeDegrees','40.7780135').up()
+  //     .ele('LongitudeDegrees','-73.9665795').up()
   //   .up()
+  //   .ele('AltitudeMeters', '36.1867676').up()
+  //   .ele('DistanceMeters', '0.0629519').up()
+  //   .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
+  //     .ele('Value', '148').up()
+  //   .up()
+  //   .ele('SensorState', 'Absent').up()
   // .up()
 
-  // TCX builder middle 
-  feed.ele('Trackpoint')
-    .ele('Time', '2010-06-26T10:06:11Z').up()
-    .ele('Position')
-      .ele('LatitudeDegrees','40.7780135').up()
-      .ele('LongitudeDegrees','-73.9665795').up()
-    .up()
-    .ele('AltitudeMeters', '36.1867676').up()
-    .ele('DistanceMeters', '0.0629519').up()
-    .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
-      .ele('Value', '148').up()
-    .up()
-    .ele('SensorState', 'Absent').up()
-  .up()
+  // // TCX builder middle 2
+  // var testTime = '2022-22-22T22:22:22Z';
+  // var testLatitude = 20.7780135;
+  // var testLongitude = -10.7780135;
+  // var testAltitude = 30.1867676;
+  // var testDistance = 0.1000000;
+  // var testHeartRate = 200;
+  // var testSensorState = 'Absent';
+  // feed.ele('Trackpoint')
+  //   .ele('Time', `${testTime}`).up()
+  //   .ele('Position')
+  //     .ele('LatitudeDegrees',`${testLatitude}`).up()
+  //     .ele('LongitudeDegrees',`${testLongitude}`).up()
+  //   .up()
+  //   .ele('AltitudeMeters', `${testAltitude}`).up()
+  //   .ele('DistanceMeters', `${testDistance}`).up()
+  //   .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
+  //     .ele('Value', `${testHeartRate}`).up()
+  //   .up()
+  //   .ele('SensorState', `${testSensorState}`).up()
+  // .up()
 
-  // TCX builder middle 2
-  var testTime = '2022-22-22T22:22:22Z';
-  var testLatitude = 20.7780135;
-  var testLongitude = -10.7780135;
-  var testAltitude = 30.1867676;
-  var testDistance = 0.1000000;
-  var testHeartRate = 200;
-  var testSensorState = 'Absent';
-  feed.ele('Trackpoint')
-    .ele('Time', `${testTime}`).up()
-    .ele('Position')
-      .ele('LatitudeDegrees',`${testLatitude}`).up()
-      .ele('LongitudeDegrees',`${testLongitude}`).up()
-    .up()
-    .ele('AltitudeMeters', `${testAltitude}`).up()
-    .ele('DistanceMeters', `${testDistance}`).up()
-    .ele('HeartRateBpm', { 'xsi:type':'HeartRateInBeatsPerMinute_t' })
-      .ele('Value', `${testHeartRate}`).up()
-    .up()
-    .ele('SensorState', `${testSensorState}`).up()
-  .up()
+  // // TCX builder end
+  // feed.up().up().up().up()
 
-  // TCX builder end
-  feed.up().up().up().up()
-
-  console.log(feed.end({ pretty: true }));
+  // console.log(feed.end({ pretty: true }));
 
 
 
@@ -389,7 +471,6 @@ export const MapScreen = () => {
       removeLocationUpdates();
     };
   }, [removeLocationUpdates]);
-
 
 
   return (
