@@ -295,6 +295,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // react-native-fs
+    // implementation project(':react-native-fs')
 }
 
 if (isNewArchitectureEnabled()) {
