@@ -8,7 +8,7 @@ Please make sure the necessary Tools to develop Apps with React Native framework
 
 ## Quick Start
 
-1. Make sure Nodejs, NPM and Yarn are correctly installed:
+1. Make sure Nodejs, NPM and Yarn are correctly installed: 
 
 ```bash
 node -v
