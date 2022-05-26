@@ -1,3 +1,7 @@
+import StorybookUIRoot from '../../../storybook/Storybook';
+export { StorybookUIRoot as default };
+
+
 import React, { useEffect, useRef, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -21,7 +25,7 @@ const fakeApiCallWithoutBadNetwork = (ms: number) =>
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export const RootScreen = () => {
+export const RootStackScreen = () => {
   const [bootSplashIsVisible, setBootSplashIsVisible] = useState(true);
   const [bootSplashLogoIsLoaded, setBootSplashLogoIsLoaded] = useState(false);
   const opacity = useRef(new Animated.Value(1));
