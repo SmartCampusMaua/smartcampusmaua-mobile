@@ -53,4 +53,13 @@ public class MainActivity extends ReactActivity {
       super.loadApp(appKey);
     }
   }
+
+  //react-native-fs
+  // @Override
+  //   protected List<ReactPackage> getPackages() {
+  //     return Arrays.<ReactPackage>asList(
+  //       new MainReactPackage(), // <---- add comma
+  //       new RNFSPackage() // <---------- add package
+  //     );
+  //   }
 }
