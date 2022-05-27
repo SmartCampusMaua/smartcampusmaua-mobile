@@ -13,8 +13,6 @@ import com.smartcampusmaua_app.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-//react-native-fs
-import com.rnfs.RNFSPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -91,13 +89,4 @@ public class MainApplication extends Application implements ReactApplication {
       }
     }
   }
-
-  //react-native-fs
-  // @Override
-  //   protected List<ReactPackage> getPackages() {
-  //     return Arrays.<ReactPackage>asList(
-  //       new MainReactPackage(), // <---- add comma
-  //       new RNFSPackage() // <---------- add package
-  //     );
-  //   }
 }
