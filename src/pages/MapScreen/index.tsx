@@ -2,15 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Text, View, StyleSheet, Alert, Linking, PermissionsAndroid, ToastAndroid, Platform, ScrollView, Switch, Button } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import VIForegroundService from '@voximplant/react-native-foreground-service';
-
 import appConfig from './app.json';
-
-import { MapView } from '../../components/MapView'
-
+import { MapView } from '../../components/MapView';
 import axios from 'axios'; //Import of http library
-const baseURL = 'http://192.168.68.123:1880/gpslocation'; //CB debug
-// const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
-
+const baseURL = 'https://smartcampus.maua.br/node/gpslocation'; //dash SmartCampus
 import xmlbuilder from 'xmlbuilder';
 
 interface TrackpointProps {
@@ -30,190 +25,6 @@ interface TrackpointProps {
 
 
 export const MapScreen = () => {
-  /////////////////////////////TESTES/////////////////////////////////////////////////////
-  // XML Builder
-  var builder = require('xmlbuilder');
-
-  const [trackpoint, setTrackpoint] = useState<TrackpointProps[]>([])
-
-
-  // File Creation
-  // require the module
-  var RNFS = require('react-native-fs');
-
-
-
-  // Function to create new trackpoints 
-  function handleTrackpoint() {
-    const randomId = Math.floor(Math.random() * 10000); // Refactored after the Official Response
-    setTrackpoint([...trackpoint, {
-      Time: randomId.toString(),
-      Position: {
-        LatitudeDegrees: randomId,
-        LongitudeDegrees: randomId,
-      },
-      AltitudeMeters: randomId,
-      DistanceMeters: randomId,
-      HeartRateBpm: {
-        '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-        Value: randomId
-      },
-      SensorState: 'Absent',
-    }])
-    console.log(`trackpoint: ${JSON.stringify(trackpoint)}`)
-  }
-
-
-
-  // var feedObj = {
-  //   'TrainingCenterDatabase': {
-  //     '@xmlns': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2',
-  //     '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-  //     '@xmlns:schemaLocation': 'http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd',
-  //     'Activities': {
-  //       'Activity': {
-  //         '@Sport': 'Biking',
-  //         'Id': '2010-06-26T10:06:11Z',
-  //         'Lap': {
-  //           '@StartTime': '2010-06-26T10:06:11Z',
-  //           'TotalTimeSeconds': '906.1800000',
-  //           'DistanceMeters': '9762.4433594',
-  //           'MaximumSpeed': '15.2404995',
-  //           'Calories': '493',
-  //           'AverageHeartRateBpm': {
-  //             '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-  //             'Value': '179'
-  //           },
-  //           'MaximumHeartRateBpm': {
-  //             '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-  //             'Value': '194'
-  //           },
-  //           'Intensity': 'Active',
-  //           'Cadence': '84',
-  //           'TriggerMethod': 'Location',
-  //           'Track': {
-  //             'Trackpoint': [{
-
-  //               'Time': '2010-06-2T10:06:11Z',
-  //               'Position': {
-  //                 'LatitudeDegrees': '40.7780135',
-  //                 'LongitudeDegrees': '-73.9665795'
-  //               },
-  //               'AltitudeMeters': '36.1867676',
-  //               'DistanceMeters': '0.0629519',
-  //               'HeartRateBpm': {
-  //                 '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-  //                 'Value': '100'
-  //               },
-  //               'SensorState': 'Absent',
-  //             },
-  //             {
-  //               'Time': '2010-06-2T10:06:11Z',
-  //               'Position': {
-  //                 'LatitudeDegrees': '40.7780135',
-  //                 'LongitudeDegrees': '-73.9665795'
-  //               },
-  //               'AltitudeMeters': '36.1867676',
-  //               'DistanceMeters': '0.0629519',
-  //               'HeartRateBpm': {
-  //                 '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-  //                 'Value': '200'
-  //               },
-  //               'SensorState': 'Absent',
-  //             }]
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // };
-
-  const writeTcx = useCallback(() => {
-    handleTrackpoint();
-    var feedObj = {
-      'TrainingCenterDatabase': {
-        '@xmlns': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2',
-        '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-        '@xmlns:schemaLocation': 'http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd',
-        'Activities': {
-          'Activity': {
-            '@Sport': 'Biking',
-            'Id': '2010-06-26T10:06:11Z',
-            'Lap': {
-              '@StartTime': '2010-06-26T10:06:11Z',
-              'TotalTimeSeconds': '906.1800000',
-              'DistanceMeters': '9762.4433594',
-              'MaximumSpeed': '15.2404995',
-              'Calories': '493',
-              'AverageHeartRateBpm': {
-                '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-                'Value': '179'
-              },
-              'MaximumHeartRateBpm': {
-                '@xsi:type': 'HeartRateInBeatsPerMinute_t',
-                'Value': '194'
-              },
-              'Intensity': 'Active',
-              'Cadence': '84',
-              'TriggerMethod': 'Location',
-              'Track': {
-                'Trackpoint': trackpoint
-              }
-            }
-          }
-        }
-      }
-    };
-    var feed = builder.create(feedObj, { encoding: 'utf-8' }, { standalone: false })
-
-
-
-    console.log(feed.end({ pretty: true }));
-    // console.log(feedObj);
-
-
-
-    // File Creation
-    //create a new directory in Downloads (Android only)
-    var appFolder = 'smartcampus_app'
-    var DirectoryPath = RNFS.DownloadDirectoryPath + '/' + appFolder;
-    RNFS.mkdir(DirectoryPath);
-    // create a path you want to write to
-    // :warning: on iOS, you cannot write into `RNFS.MainBundlePath`,
-    // but `RNFS.DocumentDirectoryPath` exists on both platforms and is writable
-    var path = RNFS.DownloadDirectoryPath + '/smartcampus_app/test.tcx';
-    // write the file
-    RNFS.writeFile(path, feed.end({ pretty: true }), 'utf8')
-      .then((success: any) => {
-        console.log('FILE WRITTEN!');
-      })
-      .catch((err: { message: any; }) => {
-        console.log(err.message);
-      });
-
-
-  }, [trackpoint]);
-
-
-
-
-  // //Axios HTTP Post
-  // const [post, setPost] = React.useState(null);
-
-  // function createPost() {
-  //   axios.post(baseURL, {
-  //     object: feedObj,
-  //     raw: feed.end()
-  //   }).then((response) => {
-  //     setPost(response.data);
-  //   }).catch(error => console.log(error));
-  // }
-
-  // createPost();
-
-
-  /////////////////////////////////TESTE///////////////////////////////
-
   // const [region, setRegion] = useState<Region>();
   const [forceLocation, setForceLocation] = useState(true);
   const [highAccuracy, setHighAccuracy] = useState(true);
@@ -223,9 +34,14 @@ export const MapScreen = () => {
   const [foregroundService, setForegroundService] = useState(false);
   const [useLocationManager, setUseLocationManager] = useState(false);
   const [location, setLocation] = useState<any>(null);
-
   const watchId: any = useRef(null);
+  var builder = require('xmlbuilder'); // XML Builder
+  const trackpoint = useRef([{}]); // Trackpoints 
+  var RNFS = require('react-native-fs'); // File Creation
+  const [post, setPost] = useState(null); //Axios HTTP Post
 
+
+  ////////////////////////////////// LOCATION ////////////////////////////////////
   // Has Permission on iOS
   const hasPermissionIOS = async () => {
     const openSetting = () => {
@@ -351,6 +167,7 @@ export const MapScreen = () => {
       (position: any) => {
         setLocation(position);
         console.log(position);
+        handleTrackpoint();
         writeTcx();
       },
       (error) => {
@@ -413,6 +230,95 @@ export const MapScreen = () => {
       removeLocationUpdates();
     };
   }, [removeLocationUpdates]);
+
+
+  ////////////////////////////////// TCX ////////////////////////////////////
+  // Function to create new trackpoints 
+  function handleTrackpoint() {
+    const randomId = Math.floor(Math.random() * 10000); // Refactored after the Official Response
+    trackpoint.current = [...trackpoint.current, {
+      Time: randomId.toString(),
+      Position: {
+        LatitudeDegrees: randomId,
+        LongitudeDegrees: randomId,
+      },
+      AltitudeMeters: randomId,
+      DistanceMeters: randomId,
+      HeartRateBpm: {
+        '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+        Value: randomId
+      },
+      SensorState: 'Absent',
+    }]
+    console.log(`trackpoint: ${JSON.stringify(trackpoint)}`)
+  };
+
+
+  function writeTcx() {
+    var feedObj = {
+      'TrainingCenterDatabase': {
+        '@xmlns': 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2',
+        '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+        '@xmlns:schemaLocation': 'http://www.garmin.com/xmlschemas/ActivityExtension/v2 http://www.garmin.com/xmlschemas/ActivityExtensionv2.xsd http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd',
+        'Activities': {
+          'Activity': {
+            '@Sport': 'Biking',
+            'Id': '2010-06-26T10:06:11Z',
+            'Lap': {
+              '@StartTime': '2010-06-26T10:06:11Z',
+              'TotalTimeSeconds': '906.1800000',
+              'DistanceMeters': '9762.4433594',
+              'MaximumSpeed': '15.2404995',
+              'Calories': '493',
+              'AverageHeartRateBpm': {
+                '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+                'Value': '179'
+              },
+              'MaximumHeartRateBpm': {
+                '@xsi:type': 'HeartRateInBeatsPerMinute_t',
+                'Value': '194'
+              },
+              'Intensity': 'Active',
+              'Cadence': '84',
+              'TriggerMethod': 'Location',
+              'Track': {
+                'Trackpoint': trackpoint.current
+              }
+            }
+          }
+        }
+      }
+    };
+    var feed = builder.create(feedObj, { encoding: 'utf-8' }, { standalone: false })
+    console.log(feed.end({ pretty: true }));
+    // console.log(feedObj);
+
+
+    // File Creation
+    var appFolder = 'smartcampus_app'
+    var DirectoryPath = RNFS.DownloadDirectoryPath + '/' + appFolder;
+    RNFS.mkdir(DirectoryPath);
+    // create a path you want to write to
+    // :warning: on iOS, you cannot write into `RNFS.MainBundlePath`,
+    // but `RNFS.DocumentDirectoryPath` exists on both platforms and is writable
+    var path = RNFS.DownloadDirectoryPath + '/smartcampus_app/test.tcx'; //create a new directory in Downloads (Android only)
+    // write the file
+    RNFS.writeFile(path, feed.end({ pretty: true }), 'utf8')
+      .then((success: any) => {
+        console.log('FILE WRITTEN!');
+      })
+      .catch((err: { message: any; }) => {
+        console.log(err.message);
+      });
+
+    //Axios HTTP Post
+    axios.post(baseURL, {
+      object: feedObj,
+      raw: feed.end()
+    }).then((response) => {
+      setPost(response.data);
+    }).catch(error => console.log(error));
+  };
 
 
   return (
@@ -492,6 +398,9 @@ export const MapScreen = () => {
           </View>
           <View style={styles.buttons}>
             <Button title="HANDLE TRACKPOINT" onPress={handleTrackpoint} />
+          </View>
+          <View style={styles.buttons}>
+            <Button title="WRITE TCX" onPress={writeTcx} />
           </View>
         </View>
 
