@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import CameraScreen from './CameraScreen';
 
+import flashOn from "../../assets/images/CameraIcons/flashOn.png";
+import flashOff from "../../assets/images/CameraIcons/flashOff.png";
+import flashAuto from "../../assets/images/CameraIcons/flashAuto.png";
+import cameraFlipIcon from "../../assets/images/CameraIcons/cameraFlipIcon.png";
+import cameraButton from "../../assets/images/CameraIcons/cameraButton.png";
+import torchOn from "../../assets/images/CameraIcons/torchOn.png";
+import torchOff from "../../assets/images/CameraIcons/torchOff.png";
+
+
 export default class CameraScreenExample extends Component {
   onBottomButtonPressed(event: any) {
     const captureImages = JSON.stringify(event.captureImages);
@@ -19,14 +28,14 @@ export default class CameraScreenExample extends Component {
             actions={{ rightButtonText: 'Done', leftButtonText: 'Cancel' }}
             onBottomButtonPressed={(event) => this.onBottomButtonPressed(event)}
             flashImages={{
-                on: require('./images/flashOn.png'),
-                off: require('./images/flashOff.png'),
-                auto: require('./images/flashAuto.png'),
+                on: flashOn,
+                off: flashOff,
+                auto: flashAuto
             }}
-            cameraFlipImage={require('./images/cameraFlipIcon.png')}
-            captureButtonImage={require('./images/cameraButton.png')}
-            torchOnImage={require('./images/torchOn.png')}
-            torchOffImage={require('./images/torchOff.png')}
+            cameraFlipImage={cameraFlipIcon}
+            captureButtonImage={cameraButton}
+            torchOnImage={torchOn}
+            torchOffImage={torchOff}
             showCapturedImageCount cameraRatioOverlay={undefined} captureButtonImageStyle={undefined} cameraFlipImageStyle={undefined} hideControls={undefined} showFrame={undefined} scanBarcode={undefined} laserColor={undefined} frameColor={undefined} torchImageStyle={undefined} onReadCode={function (event: any): void {
                 throw new Error('Function not implemented.');
             } }      />

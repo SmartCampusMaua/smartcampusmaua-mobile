@@ -1,31 +1,17 @@
-import StorybookUIRoot from '../../../storybook/Storybook';
-export { StorybookUIRoot as default };
-
-
 import React, { useEffect, useRef, useState } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  Animated,
-  Button,
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Animated,Dimensions, StyleSheet, Text, View } from "react-native";
 import * as BootSplash from "react-native-bootsplash";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MainScreen, ProfileScreen } from "../MainScreen";
-const bootSplashLogo = require("../../assets/BootSplashLogo/SmartCampusMauaLogo_512x512.png");
+import { NavigationContainer } from "@react-navigation/native";
+import { MainScreen, ProfileScreen } from '../MainScreen';
+import bootSplashLogo from "../../assets/images/BootSplashLogo/SmartCampusMauaLogo_512x512.png";
 
 
 const fakeApiCallWithoutBadNetwork = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+import { RootStack } from '../../navigation/RootStackNavigator'
 
-export const RootStackScreen = () => {
+export const RootScreen = () => {
   const [bootSplashIsVisible, setBootSplashIsVisible] = useState(true);
   const [bootSplashLogoIsLoaded, setBootSplashLogoIsLoaded] = useState(false);
   const opacity = useRef(new Animated.Value(1));
@@ -66,30 +52,29 @@ export const RootStackScreen = () => {
   }, [bootSplashLogoIsLoaded]);
 
 
-  const isLoggedIn = true
+  const isLoggedIn = false
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <RootStack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
           // Screens for logged in users
-          <Stack.Group>
-            <Stack.Screen name="MainScreen" component={MainScreen} />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-          </Stack.Group>
+          <RootStack.Group>
+            <RootStack.Screen name="App" component={AppScreen} />
+          </RootStack.Group>
         ) : (
           // Auth screens
-          <Stack.Group screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-          </Stack.Group>
+          <RootStack.Group screenOptions={{ headerShown: false }}>
+            <RootStack.Screen name="SignIn" component={SignInScreen} />
+            <RootStack.Screen name="SignUp" component={SignUpScreen} />
+          </RootStack.Group>
         )}
         {/* Common modal screens */}
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Help" component={HelpModal} />
-          <Stack.Screen name="Invite" component={InviteModal} />
-        </Stack.Group>
-      </Stack.Navigator>
+        <RootStack.Group screenOptions={{ presentation: 'modal' }}>
+          <RootStack.Screen name="Help" component={HelpModal} />
+          <RootStack.Screen name="Invite" component={InviteModal} />
+        </RootStack.Group>
+      </RootStack.Navigator>
 
 
       {bootSplashIsVisible && (
@@ -119,13 +104,13 @@ export const RootStackScreen = () => {
 
 
 
-const SignInScreen = () => {
-  return (
-    <View>
-      <Text>SignIn</Text>
-    </View>
-  )
-}
+// const SignInScreen = () => {
+//   return (
+//     <View>
+//       <Text>SignIn</Text>
+//     </View>
+//   )
+// }
 
 const SignUpScreen = () => {
   return (
@@ -172,3 +157,57 @@ const styles = StyleSheet.create({
     width: 300,
   },
 });
+
+
+
+
+
+
+
+type AppScreenProps = {
+  navigation: any
+}
+
+function AppScreen({ navigation }: AppScreenProps) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => {
+          /* 1. Navigate to the Details route with params */
+          navigation.navigate('Details', {
+            itemId: 86,
+            otherParam: 'anything you want here',
+          });
+        }}
+      />
+    </View>
+  );
+}
+
+type LoginScreenProps = {
+  route: any;
+  navigation: any;
+}
+function SignInScreen({ route, navigation }: LoginScreenProps) {
+  /* 2. Get the param */
+  const { itemId, otherParam } = route.params;
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+      <Text>itemId: {JSON.stringify(itemId)}</Text>
+      <Text>otherParam: {JSON.stringify(otherParam)}</Text>
+      <Button
+        title="Go to Details... again"
+        onPress={() =>
+          navigation.push('Details', {
+            itemId: Math.floor(Math.random() * 100),
+          })
+        }
+      />
+      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+      <Button title="Go back" onPress={() => navigation.goBack()} />
+    </View>
+  );
+}

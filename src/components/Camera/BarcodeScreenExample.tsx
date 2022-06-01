@@ -43,9 +43,9 @@ export default class BarcodeScreenExample extends Component<BarcodeScreenExample
             actions={{ rightButtonText: 'Done', leftButtonText: 'Cancel' }}
             onBottomButtonPressed={(event) => this.onBottomButtonPressed(event)}
             flashImages={{
-                on: require('./images/flashOn.png'),
-                off: require('./images/flashOff.png'),
-                auto: require('./images/flashAuto.png'),
+              on: require('../../assets/images/CameraIcons/flashOn.png'),
+              off: require('../../assets/images/CameraIcons/flashOff.png'),
+              auto: require('../../assets/images/CameraIcons/flashAuto.png'),
             }}
             scanBarcode
             showFrame
