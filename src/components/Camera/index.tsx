@@ -14,8 +14,9 @@ type State = {
   example?: CameraExample | CameraScreenExample | BarcodeScreenExample;
 }
 
-export class CameraExampleScreen extends Component {
-  state: State;
+// export class CameraExampleScreen extends Component {
+export class Camera extends Component {
+    state: State;
 
   constructor(props: any) {
     super(props);
